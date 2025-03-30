@@ -82,3 +82,18 @@ data class MovieSpokenLanguageResponse(
     val iso6391: String?,
     val name: String?,
 )
+
+fun Result<MovieDetailResponse>.toMovieDetailResponse() = map { it.toMovieDetail() }
+
+fun MovieDetailResponse.toMovieDetail() = MovieDetail(
+    id = id.orDefault(),
+    image = BASE_MOVIE_URL + backdropPath.orEmpty(),
+    title = title.orEmpty(),
+    duration = runtime.orDefault(),
+    releaseDate = releaseDate.orEmpty(),
+    rating = voteAverage.orDefault().toString(),
+    genres = genres?.mapNotNull { it.name }?.joinToString().orEmpty(),
+    description = overview.orEmpty()
+)
+
+private const val BASE_MOVIE_URL = "https://image.tmdb.org/t/p/w500/"
