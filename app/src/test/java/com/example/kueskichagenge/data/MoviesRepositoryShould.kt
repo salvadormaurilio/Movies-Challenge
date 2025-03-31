@@ -31,7 +31,7 @@ class MoviesRepositoryShould {
     }
 
     @Test
-    fun `Get Movies data when fetchMovies is success` () = runTest{
+    fun `Get Movies data when fetchMovies is success`() = runTest {
         val moviesResponse = givenMoviesResponseFakeData()
         val movies = givenMoviesFakeData()
         val resultSuccess = Result.success(moviesResponse)
@@ -44,7 +44,7 @@ class MoviesRepositoryShould {
     }
 
     @Test
-    fun `Get MoviesException data when fetchMovies is failure`() = runTest{
+    fun `Get MoviesException data when fetchMovies is failure`() = runTest {
         val resultFailure: Result<MoviesResponse> = Result.failure(DataException.MoviesException())
 
         whenever(moviesRemoteDataSource.fetchMovies()).thenReturn(flowOf(resultFailure))
@@ -55,7 +55,7 @@ class MoviesRepositoryShould {
     }
 
     @Test
-    fun `Get Movie Detail data when fetchMovieDetail is success` () = runTest{
+    fun `Get MovieDetail data when fetchMovieDetail is success`() = runTest {
         val movieDetailResponse = givenMovieDetailResponseFakeData()
         val movieDetail = givenMovieDetail()
         val resultSuccess = Result.success(movieDetailResponse)
@@ -68,7 +68,7 @@ class MoviesRepositoryShould {
     }
 
     @Test
-    fun `Get MovieDetailException data when fetchMovieDetail is failure`() = runTest{
+    fun `Get MovieDetailException data when fetchMovieDetail is failure`() = runTest {
         val resultFailure: Result<MovieDetailResponse> = Result.failure(DataException.MovieDetailException())
 
         whenever(moviesRemoteDataSource.fetchMovieDetail(ANY_MOVIE_DETAIL_ID)).thenReturn(flowOf(resultFailure))
