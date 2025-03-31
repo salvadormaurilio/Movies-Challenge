@@ -5,10 +5,8 @@ import com.example.kueskichagenge.core.assertThatIsInstanceOf
 import com.example.kueskichagenge.data.MoviesRepository
 import com.example.kueskichagenge.data.datasource.exception.DataException
 import com.example.kueskichagenge.domain.model.MovieDetail
-import com.example.kueskichagenge.domain.model.Movies
 import com.example.kueskichagenge.fakedata.ANY_MOVIE_DETAIL_ID
-import com.example.kueskichagenge.fakedata.givenMovieDetail
-import com.example.kueskichagenge.fakedata.givenMoviesFakeData
+import com.example.kueskichagenge.fakedata.givenMovieDetailFakeData
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.lastOrNull
 import kotlinx.coroutines.test.runTest
@@ -30,7 +28,7 @@ class GetMovieDetailUserCaseShould {
 
     @Test
     fun `Get MovieDetail data when fetchMovies is success`() = runTest {
-        val movieDetail = givenMovieDetail()
+        val movieDetail = givenMovieDetailFakeData()
         val resultSuccess = Result.success(movieDetail)
         whenever(moviesRepository.fetchMovieDetail(ANY_MOVIE_DETAIL_ID)).thenReturn(flowOf(resultSuccess))
 

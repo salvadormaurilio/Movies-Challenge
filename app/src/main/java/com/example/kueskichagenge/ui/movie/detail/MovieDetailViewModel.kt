@@ -2,6 +2,7 @@ package com.example.kueskichagenge.ui.movie.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.kueskichagenge.core.coroutines.CoroutinesDispatchers
 import com.example.kueskichagenge.domain.GetMovieDetailUseCase
 import com.example.kueskichagenge.domain.model.MovieDetail
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,6 +14,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MovieDetailViewModel @Inject constructor(
     private val getMovieDetailUseCase: GetMovieDetailUseCase,
+    private val coroutinesDispatchers: CoroutinesDispatchers,
 ) : ViewModel() {
 
     private val _movieDetailUiState = MutableStateFlow<MovieDetailUiState?>(null)
@@ -20,7 +22,7 @@ class MovieDetailViewModel @Inject constructor(
     val movieDetailUiState: StateFlow<MovieDetailUiState?>
         get() = _movieDetailUiState
 
-    fun getMovieDetail(movieId: Int) = viewModelScope.launch {
+    fun getMovieDetail(movieId: Int) = viewModelScope.launch(coroutinesDispatchers.io) {
         emitMovieDetailUiState(isLoading = true)
 
         getMovieDetailUseCase.fetchMovieDetail(movieId).collect {
@@ -45,5 +47,4 @@ class MovieDetailViewModel @Inject constructor(
     ) {
         _movieDetailUiState.value = MovieDetailUiState(isLoading = isLoading, movieDetail = movieDetail, error = error)
     }
-
 }

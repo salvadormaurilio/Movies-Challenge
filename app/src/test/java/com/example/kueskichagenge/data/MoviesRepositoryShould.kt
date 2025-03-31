@@ -7,7 +7,7 @@ import com.example.kueskichagenge.data.datasource.model.MovieDetailResponse
 import com.example.kueskichagenge.data.datasource.model.MoviesResponse
 import com.example.kueskichagenge.data.datasource.remote.MoviesRemoteDataSource
 import com.example.kueskichagenge.fakedata.ANY_MOVIE_DETAIL_ID
-import com.example.kueskichagenge.fakedata.givenMovieDetail
+import com.example.kueskichagenge.fakedata.givenMovieDetailFakeData
 import com.example.kueskichagenge.fakedata.givenMovieDetailResponseFakeData
 import com.example.kueskichagenge.fakedata.givenMoviesFakeData
 import com.example.kueskichagenge.fakedata.givenMoviesResponseFakeData
@@ -57,7 +57,7 @@ class MoviesRepositoryShould {
     @Test
     fun `Get MovieDetail data when fetchMovieDetail is success`() = runTest {
         val movieDetailResponse = givenMovieDetailResponseFakeData()
-        val movieDetail = givenMovieDetail()
+        val movieDetail = givenMovieDetailFakeData()
         val resultSuccess = Result.success(movieDetailResponse)
         whenever(moviesRemoteDataSource.fetchMovieDetail(ANY_MOVIE_DETAIL_ID)).thenReturn(flowOf(resultSuccess))
 

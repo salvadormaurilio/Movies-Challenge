@@ -2,6 +2,7 @@ package com.example.kueskichagenge.ui.movies
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.kueskichagenge.core.coroutines.CoroutinesDispatchers
 import com.example.kueskichagenge.domain.GetMoviesUseCase
 import com.example.kueskichagenge.domain.model.Movie
 import com.example.kueskichagenge.domain.model.Movies
@@ -14,7 +15,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MoviesViewModel @Inject constructor(private val getMoviesUseCase: GetMoviesUseCase) : ViewModel() {
+class MoviesViewModel @Inject constructor(
+    private val getMoviesUseCase: GetMoviesUseCase,
+    private val coroutinesDispatchers: CoroutinesDispatchers
+) : ViewModel() {
 
     private val _moviesUiState = MutableStateFlow(MoviesUiState())
     val moviesUiState = _moviesUiState.asStateFlow()
@@ -22,7 +26,7 @@ class MoviesViewModel @Inject constructor(private val getMoviesUseCase: GetMovie
     private val _navigateToMovieDetail = Channel<Int>()
     val navigateToMovieDetail = _navigateToMovieDetail.receiveAsFlow()
 
-    fun getMovies() = viewModelScope.launch {
+    fun getMovies() = viewModelScope.launch(coroutinesDispatchers.io) {
         emitMoviesUiState(isLoading = true)
 
         getMoviesUseCase.fetchMovies().collect {
@@ -46,5 +50,9 @@ class MoviesViewModel @Inject constructor(private val getMoviesUseCase: GetMovie
         error: Throwable? = null
     ) {
         _moviesUiState.value = MoviesUiState(isLoading = isLoading, movies = movies, error = error)
+    }
+
+    fun openMovieDetail(movieId: Int) = viewModelScope.launch(coroutinesDispatchers.main) {
+        _navigateToMovieDetail.send(movieId)
     }
 }

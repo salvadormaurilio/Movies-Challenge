@@ -60,7 +60,7 @@ fun givenMovieDetailResponseFakeData() = MovieDetailResponse(
     voteCount = 110
 )
 
-fun givenMovieDetail() = MovieDetail(
+fun givenMovieDetailFakeData() = MovieDetail(
     id = 1125899,
     image = "https://image.tmdb.org/t/p/w500/mwzDApMZAGeYCEVjhegKvCzDX0W.jpg",
     title = "Cleaner",
