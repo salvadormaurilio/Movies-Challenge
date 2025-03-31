@@ -6,7 +6,6 @@ import com.example.kueskichagenge.domain.model.Movies
 import com.google.gson.annotations.SerializedName
 
 data class MoviesResponse(
-    val dates: MoviesDatesResponse?,
     val page: Int?,
     @SerializedName("results")
     val results: List<MoviesResultResponse?>?,
@@ -14,11 +13,6 @@ data class MoviesResponse(
     val totalPages: Int?,
     @SerializedName("total_results")
     val totalResults: Int?,
-)
-
-data class MoviesDatesResponse(
-    val maximum: String?,
-    val minimum: String?,
 )
 
 data class MoviesResultResponse(
@@ -50,7 +44,7 @@ fun Result<MoviesResponse>.toMovies() = map { it.toMovies() }
 
 fun MoviesResponse.toMovies() = Movies(
     totalPages = totalPages.orDefault(),
-    page =  page.orDefault(),
+    page = page.orDefault(),
     movies = results.toMovies()
 )
 
@@ -59,8 +53,9 @@ fun List<MoviesResultResponse?>?.toMovies() = this?.mapNotNull { it?.toMovie() }
 fun MoviesResultResponse.toMovie() = Movie(
     id = id.orDefault(),
     title = title.orEmpty(),
-    image =  BASE_MOVIE_URL +posterPath.orEmpty(),
-    rating = voteAverage.orDefault()
+    overview = overview.orEmpty(),
+    poster = BASE_MOVIE_URL + posterPath.orEmpty(),
+    releaseDate = releaseDate.orEmpty()
 )
 
-private const val BASE_MOVIE_URL= "https://image.tmdb.org/t/p/w200/"
+private const val BASE_MOVIE_URL = "https://image.tmdb.org/t/p/w200"

@@ -1,7 +1,8 @@
-package com.example.kueskichagenge.data.datasource.remote
+package com.example.kueskichagenge.data
 
 import com.example.kueskichagenge.data.datasource.model.toMovieDetailResponse
 import com.example.kueskichagenge.data.datasource.model.toMovies
+import com.example.kueskichagenge.data.datasource.remote.MoviesRemoteDataSource
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
