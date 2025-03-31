@@ -29,10 +29,10 @@ class GetMoviesUserCaseShould {
     fun `Get Movies data when fetchMovies is success`() = runTest {
         val movies = givenMoviesFakeData()
         val resultSuccess = Result.success(movies)
-
         whenever(moviesRepository.fetchMovies()).thenReturn(flowOf(resultSuccess))
 
         val result = getMoviesUseCase.fetchMovies().lastOrNull()
+
         verify(moviesRepository).fetchMovies()
         assertThatEquals(result?.getOrNull(), movies)
     }
@@ -40,10 +40,10 @@ class GetMoviesUserCaseShould {
     @Test
     fun `Get MoviesException data when fetchMovies is failure`() = runTest {
         val resultFailure: Result<Movies> = Result.failure(DataException.MoviesException())
-
         whenever(moviesRepository.fetchMovies()).thenReturn(flowOf(resultFailure))
 
         val result = getMoviesUseCase.fetchMovies().lastOrNull()
+
         verify(moviesRepository).fetchMovies()
         assertThatIsInstanceOf<DataException.MoviesException>(result?.exceptionOrNull())
     }

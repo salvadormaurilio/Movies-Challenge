@@ -7,6 +7,7 @@ import com.example.kueskichagenge.data.datasource.model.MovieProductionCountryRe
 import com.example.kueskichagenge.data.datasource.model.MovieSpokenLanguageResponse
 import com.example.kueskichagenge.domain.model.MovieDetail
 
+const val ANY_MOVIE_DETAIL_ENDPOINT = "/3/movie/1125899?language=en-US"
 const val ANY_MOVIE_DETAIL_ID = 1125899
 
 fun givenMovieDetailResponseFakeData() = MovieDetailResponse(

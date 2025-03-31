@@ -1,0 +1,45 @@
+{
+  "page": 1,
+  "results": [
+    {
+      "adult": false,
+      "backdrop_path": "/gsQJOfeW45KLiQeEIsom94QPQwb.jpg",
+      "genre_ids": [
+        28,
+        53
+      ],
+      "id": 1125899,
+      "original_language": "en",
+      "original_title": "Cleaner",
+      "overview": "When a group of radical activists take over an energy company's annual gala, seizing 300 hostages, an ex-soldier turned window cleaner suspended 50 storeys up on the outside of the building must save those trapped inside, including her younger brother.",
+      "popularity": 559.235,
+      "poster_path": "/mwzDApMZAGeYCEVjhegKvCzDX0W.jpg",
+      "release_date": "2025-02-19",
+      "title": "Cleaner",
+      "video": false,
+      "vote_average": 6.6,
+      "vote_count": 107
+    },
+    {
+      "adult": false,
+      "backdrop_path": "/m2mzlsJjE3UAqeUB5fLUkpWg4Iq.jpg",
+      "genre_ids": [
+        53,
+        878
+      ],
+      "id": 1165067,
+      "original_language": "en",
+      "original_title": "Cosmic Chaos",
+      "overview": "Battles in virtual reality, survival in a post-apocalyptic wasteland, a Soviet spaceship giving a distress signal - Fantastic stories created with advanced special effects and passion.",
+      "popularity": 539.5847,
+      "poster_path": "/mClzWv7gBqgXfjZXp49Enyoex1v.jpg",
+      "release_date": "2023-08-03",
+      "title": "Cosmic Chaos",
+      "video": false,
+      "vote_average": 5.7,
+      "vote_count": 13
+    }
+  ],
+  "total_pages": 49467,
+  "total_results": 989327
+}

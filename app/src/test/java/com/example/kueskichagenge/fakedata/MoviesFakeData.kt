@@ -5,6 +5,8 @@ import com.example.kueskichagenge.data.datasource.model.MoviesResultResponse
 import com.example.kueskichagenge.domain.model.Movie
 import com.example.kueskichagenge.domain.model.Movies
 
+const val ANY_MOVIES_ENDPOINT = "/3/discover/movie?include_adult=false&include_video=false&language=en-US&sort_by=popularity.desc"
+
 fun givenMoviesResponseFakeData() = MoviesResponse(
     page = 1,
     results = listOf(

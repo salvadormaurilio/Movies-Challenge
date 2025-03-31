@@ -4,8 +4,6 @@ import com.example.kueskichagenge.core.extensions.DEFAULT_VALUE
 import com.google.gson.GsonBuilder
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
-import org.hamcrest.CoreMatchers.equalTo
-import org.hamcrest.MatcherAssert.assertThat
 import org.junit.rules.TestRule
 import org.junit.runner.Description
 import org.junit.runners.model.Statement

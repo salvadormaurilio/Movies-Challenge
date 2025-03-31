@@ -35,10 +35,10 @@ class MoviesRepositoryShould {
         val moviesResponse = givenMoviesResponseFakeData()
         val movies = givenMoviesFakeData()
         val resultSuccess = Result.success(moviesResponse)
-
         whenever(moviesRemoteDataSource.fetchMovies()).thenReturn(flowOf(resultSuccess))
 
         val result = moviesRepository.fetchMovies().lastOrNull()
+
         verify(moviesRemoteDataSource).fetchMovies()
         assertThatEquals(result?.getOrNull(), movies)
     }
@@ -46,10 +46,10 @@ class MoviesRepositoryShould {
     @Test
     fun `Get MoviesException data when fetchMovies is failure`() = runTest {
         val resultFailure: Result<MoviesResponse> = Result.failure(DataException.MoviesException())
-
         whenever(moviesRemoteDataSource.fetchMovies()).thenReturn(flowOf(resultFailure))
 
         val result = moviesRepository.fetchMovies().lastOrNull()
+
         verify(moviesRemoteDataSource).fetchMovies()
         assertThatIsInstanceOf<DataException.MoviesException>(result?.exceptionOrNull())
     }
@@ -59,10 +59,10 @@ class MoviesRepositoryShould {
         val movieDetailResponse = givenMovieDetailResponseFakeData()
         val movieDetail = givenMovieDetail()
         val resultSuccess = Result.success(movieDetailResponse)
-
         whenever(moviesRemoteDataSource.fetchMovieDetail(ANY_MOVIE_DETAIL_ID)).thenReturn(flowOf(resultSuccess))
 
         val result = moviesRepository.fetchMovieDetail(ANY_MOVIE_DETAIL_ID).lastOrNull()
+
         verify(moviesRemoteDataSource).fetchMovieDetail(ANY_MOVIE_DETAIL_ID)
         assertThatEquals(result?.getOrNull(), movieDetail)
     }
@@ -70,10 +70,10 @@ class MoviesRepositoryShould {
     @Test
     fun `Get MovieDetailException data when fetchMovieDetail is failure`() = runTest {
         val resultFailure: Result<MovieDetailResponse> = Result.failure(DataException.MovieDetailException())
-
         whenever(moviesRemoteDataSource.fetchMovieDetail(ANY_MOVIE_DETAIL_ID)).thenReturn(flowOf(resultFailure))
 
         val result = moviesRepository.fetchMovieDetail(ANY_MOVIE_DETAIL_ID).lastOrNull()
+
         verify(moviesRemoteDataSource).fetchMovieDetail(ANY_MOVIE_DETAIL_ID)
         assertThatIsInstanceOf<DataException.MovieDetailException>(result?.exceptionOrNull())
     }
