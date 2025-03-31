@@ -83,7 +83,7 @@ data class MovieSpokenLanguageResponse(
     val name: String?,
 )
 
-fun Result<MovieDetailResponse>.toMovieDetailResponse() = map { it.toMovieDetail() }
+fun Result<MovieDetailResponse>.toMovieDetail() = map { it.toMovieDetail() }
 
 fun MovieDetailResponse.toMovieDetail() = MovieDetail(
     id = id.orDefault(),
@@ -91,9 +91,9 @@ fun MovieDetailResponse.toMovieDetail() = MovieDetail(
     title = title.orEmpty(),
     duration = runtime.orDefault(),
     releaseDate = releaseDate.orEmpty(),
-    rating = voteAverage.orDefault().toString(),
+    rating = voteAverage?.toString().orEmpty(),
     genres = genres?.mapNotNull { it.name }?.joinToString().orEmpty(),
-    description = overview.orEmpty()
+    overview = overview.orEmpty()
 )
 
-private const val BASE_MOVIE_URL = "https://image.tmdb.org/t/p/w500/"
+private const val BASE_MOVIE_URL = "https://image.tmdb.org/t/p/w500"

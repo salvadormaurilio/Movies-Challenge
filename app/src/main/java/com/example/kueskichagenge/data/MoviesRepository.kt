@@ -1,6 +1,6 @@
 package com.example.kueskichagenge.data
 
-import com.example.kueskichagenge.data.datasource.model.toMovieDetailResponse
+import com.example.kueskichagenge.data.datasource.model.toMovieDetail
 import com.example.kueskichagenge.data.datasource.model.toMovies
 import com.example.kueskichagenge.data.datasource.remote.MoviesRemoteDataSource
 import kotlinx.coroutines.flow.map
@@ -10,5 +10,5 @@ class MoviesRepository @Inject constructor(private val moviesRemoteDataSource: M
 
     fun fetchMovies() = moviesRemoteDataSource.fetchMovies().map { it.toMovies() }
 
-    fun fetchMovieDetail(movieId: Int) = moviesRemoteDataSource.fetchMovieDetail(movieId).map { it.toMovieDetailResponse() }
+    fun fetchMovieDetail(movieId: Int) = moviesRemoteDataSource.fetchMovieDetail(movieId).map { it.toMovieDetail() }
 }

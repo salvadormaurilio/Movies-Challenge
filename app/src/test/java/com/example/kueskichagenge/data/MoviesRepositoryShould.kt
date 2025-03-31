@@ -3,9 +3,12 @@ package com.example.kueskichagenge.data
 import com.example.kueskichagenge.core.assertThatEquals
 import com.example.kueskichagenge.core.assertThatIsInstanceOf
 import com.example.kueskichagenge.data.datasource.exception.DataException
+import com.example.kueskichagenge.data.datasource.model.MovieDetailResponse
 import com.example.kueskichagenge.data.datasource.model.MoviesResponse
 import com.example.kueskichagenge.data.datasource.remote.MoviesRemoteDataSource
-import com.example.kueskichagenge.domain.model.Movies
+import com.example.kueskichagenge.fakedata.ANY_MOVIE_DETAIL_ID
+import com.example.kueskichagenge.fakedata.givenMovieDetail
+import com.example.kueskichagenge.fakedata.givenMovieDetailResponseFakeData
 import com.example.kueskichagenge.fakedata.givenMoviesFakeData
 import com.example.kueskichagenge.fakedata.givenMoviesResponseFakeData
 import kotlinx.coroutines.flow.flowOf
@@ -49,5 +52,29 @@ class MoviesRepositoryShould {
         val result = moviesRepository.fetchMovies().lastOrNull()
         verify(moviesRemoteDataSource).fetchMovies()
         assertThatIsInstanceOf<DataException.MoviesException>(result?.exceptionOrNull())
+    }
+
+    @Test
+    fun `Get Movie Detail data when fetchMovieDetail is success` () = runTest{
+        val movieDetailResponse = givenMovieDetailResponseFakeData()
+        val movieDetail = givenMovieDetail()
+        val resultSuccess = Result.success(movieDetailResponse)
+
+        whenever(moviesRemoteDataSource.fetchMovieDetail(ANY_MOVIE_DETAIL_ID)).thenReturn(flowOf(resultSuccess))
+
+        val result = moviesRepository.fetchMovieDetail(ANY_MOVIE_DETAIL_ID).lastOrNull()
+        verify(moviesRemoteDataSource).fetchMovieDetail(ANY_MOVIE_DETAIL_ID)
+        assertThatEquals(result?.getOrNull(), movieDetail)
+    }
+
+    @Test
+    fun `Get MovieDetailException data when fetchMovieDetail is failure`() = runTest{
+        val resultFailure: Result<MovieDetailResponse> = Result.failure(DataException.MovieDetailException())
+
+        whenever(moviesRemoteDataSource.fetchMovieDetail(ANY_MOVIE_DETAIL_ID)).thenReturn(flowOf(resultFailure))
+
+        val result = moviesRepository.fetchMovieDetail(ANY_MOVIE_DETAIL_ID).lastOrNull()
+        verify(moviesRemoteDataSource).fetchMovieDetail(ANY_MOVIE_DETAIL_ID)
+        assertThatIsInstanceOf<DataException.MovieDetailException>(result?.exceptionOrNull())
     }
 }
