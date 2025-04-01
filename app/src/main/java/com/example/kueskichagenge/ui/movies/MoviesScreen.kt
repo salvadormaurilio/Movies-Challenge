@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -61,6 +62,7 @@ fun MoviesScreen(viewModel: MoviesViewModel = hiltViewModel(), openMovieDetail: 
         isLoading = uiState.value.isLoading,
         movies = uiState.value.movies,
         error = uiState.value.error,
+        listState = viewModel.listState,
         onMovieClick = { viewModel.openMovieDetail(it) },
         onRetry = { viewModel.getMovies() }
     )
@@ -71,14 +73,16 @@ private fun MoviesContent(
     isLoading: Boolean = false,
     movies: Movies? = null,
     error: Throwable? = null,
-    onMovieClick: (id: Int) -> Unit = {},
-    onRetry: () -> Unit = {}
+    listState: LazyListState = LazyListState(),
+    onRetry: () -> Unit = {},
+    onMovieClick: (id: Int) -> Unit = {}
 ) {
     Scaffold(
         topBar = { MoviesTopAppBar() },
         content = { paddingValues ->
             Movies(
                 modifier = Modifier.padding(paddingValues),
+                listState = listState,
                 movies = movies?.movies,
                 onMovieClick = onMovieClick
             )
@@ -115,13 +119,15 @@ fun MoviesTopAppBar() {
 @Composable
 fun Movies(
     modifier: Modifier = Modifier,
-    movies: List<Movie>?,
-    onMovieClick: (id: Int) -> Unit = {}
+    listState: LazyListState,
+    onMovieClick: (id: Int) -> Unit = {},
+    movies: List<Movie>?
 ) {
     if (movies == null) return
     LazyColumn(
         modifier = modifier,
         contentPadding = PaddingValues(vertical = 8.dp),
+        state = listState
     ) {
         items(
             items = movies,
@@ -205,7 +211,7 @@ fun MoviesContentUiStateLoadingPreview() {
 fun MoviesContentUiStateSuccessPreview() {
     KueskiChagengeTheme {
         MoviesContent(
-            movies = givenMovies()
+            movies = givenMovies(),
         )
     }
 }

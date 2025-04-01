@@ -17,7 +17,7 @@ import com.example.kueskichagenge.ui.theme.KueskiChagengeTheme
 @Composable
 fun GenreChip(genres: List<String>) {
     FlowRow(
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+        horizontalArrangement = Arrangement.spacedBy(6.dp),
     ) {
         genres.forEach { genre ->
             SuggestionChip(
@@ -32,6 +32,7 @@ fun GenreChip(genres: List<String>) {
                 label = {
                     Text(
                         text = genre,
+                        style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onPrimary,
                     )
                 },

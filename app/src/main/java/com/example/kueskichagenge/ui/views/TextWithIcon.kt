@@ -27,7 +27,7 @@ fun TextWithIcon(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
-            modifier = Modifier.size(20.dp),
+            modifier = Modifier.size(18.dp),
             imageVector = icon,
             contentDescription = String.empty(),
             tint = MaterialTheme.colorScheme.onSurface

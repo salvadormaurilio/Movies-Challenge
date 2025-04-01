@@ -1,5 +1,6 @@
 package com.example.kueskichagenge.ui.movies
 
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kueskichagenge.core.coroutines.CoroutinesDispatchers
@@ -19,18 +20,23 @@ class MoviesViewModel @Inject constructor(
     private val coroutinesDispatchers: CoroutinesDispatchers
 ) : ViewModel() {
 
+    val listState = LazyListState()
+
     private val _moviesUiState = MutableStateFlow(MoviesUiState())
     val moviesUiState = _moviesUiState.asStateFlow()
 
     private val _navigateToMovieDetail = Channel<Int>()
     val navigateToMovieDetail = _navigateToMovieDetail.receiveAsFlow()
 
-    fun getMovies() = viewModelScope.launch(coroutinesDispatchers.io) {
-        emitMoviesUiState(isLoading = true)
+    fun getMovies() {
+        if (moviesUiState.value.movies != null || moviesUiState.value.isLoading) return
+        viewModelScope.launch(coroutinesDispatchers.io) {
+            emitMoviesUiState(isLoading = true)
 
-        getMoviesUseCase.fetchMovies().collect {
-            getMoviesSuccess(it)
-            getMoviesError(it)
+            getMoviesUseCase.fetchMovies().collect {
+                getMoviesSuccess(it)
+                getMoviesError(it)
+            }
         }
     }
 
