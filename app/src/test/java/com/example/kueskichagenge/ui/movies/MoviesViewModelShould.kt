@@ -7,11 +7,8 @@ import com.example.kueskichagenge.data.datasource.exception.DataException
 import com.example.kueskichagenge.domain.GetMoviesUseCase
 import com.example.kueskichagenge.fakedata.ANY_MOVIE_DETAIL_ID
 import com.example.kueskichagenge.fakedata.givenMoviesFakeData
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.lastOrNull
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
@@ -43,7 +40,7 @@ class MoviesViewModelShould {
         val result = moviesViewModel.moviesUiState.firstOrNull()
 
         verify(getMoviesUseCase).fetchMovies()
-        assertThatEquals(result?.movies, movies.movies)
+        assertThatEquals(result?.movies, movies)
     }
 
     @Test

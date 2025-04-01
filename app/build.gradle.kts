@@ -59,6 +59,9 @@ dependencies {
     implementation(libs.converter.gson)
     implementation (libs.logging.interceptor)
 
+    implementation(libs.coil.compose)
+
+    implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
 
