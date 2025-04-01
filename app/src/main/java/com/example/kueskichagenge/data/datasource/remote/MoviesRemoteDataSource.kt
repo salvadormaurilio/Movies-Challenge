@@ -7,11 +7,12 @@ import javax.inject.Inject
 
 class MoviesRemoteDataSource @Inject constructor(private val moviesServiceRetrofit: MoviesServiceRetrofit) {
 
-    fun fetchMovies() = flow {
+    fun fetchMovies(page: Int) = flow {
         try {
-            val moviesResponse = moviesServiceRetrofit.fetchMovies()
+            val moviesResponse = moviesServiceRetrofit.fetchMovies(page.toString())
             emit(Result.success(moviesResponse))
         } catch (exception: Exception) {
+            exception.printStackTrace()
             emit(Result.failure(DataException.MoviesException()))
         }
     }
@@ -21,6 +22,7 @@ class MoviesRemoteDataSource @Inject constructor(private val moviesServiceRetrof
             val moviesResponse = moviesServiceRetrofit.fetchMovieDetail(movieId)
             emit(Result.success(moviesResponse))
         } catch (exception: Exception) {
+            exception.printStackTrace()
             emit(Result.failure(DataException.MovieDetailException()))
         }
     }

@@ -38,7 +38,7 @@ object AppModule {
     @Singleton
     fun provideOkHttpClientBuilder(okHttpInterceptor: Interceptor) = OkHttpClient.Builder()
         .addInterceptor(okHttpInterceptor)
-        .addInterceptor(HttpLoggingInterceptor())
+        .addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY })
 
     @Provides
     @Singleton
