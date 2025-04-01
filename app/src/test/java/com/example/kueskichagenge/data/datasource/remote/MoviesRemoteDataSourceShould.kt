@@ -5,6 +5,7 @@ import com.example.kueskichagenge.core.assertThatEquals
 import com.example.kueskichagenge.core.assertThatIsInstanceOf
 import com.example.kueskichagenge.data.datasource.exception.DataException
 import com.example.kueskichagenge.data.datasource.remote.retrofit.MoviesServiceRetrofit
+import com.example.kueskichagenge.domain.model.DEFAULT_PAGE
 import com.example.kueskichagenge.fakedata.ANY_MOVIES_ENDPOINT
 import com.example.kueskichagenge.fakedata.ANY_MOVIE_DETAIL_ENDPOINT
 import com.example.kueskichagenge.fakedata.ANY_MOVIE_DETAIL_ID
@@ -33,7 +34,7 @@ class MoviesRemoteDataSourceShould {
         val moviesResponse = givenMoviesResponseFakeData()
         webServerRule.loadMockResponse(fileName = "moviesResponse.json")
 
-        val result = moviesRemoteDataSource.fetchMovies().lastOrNull()
+        val result = moviesRemoteDataSource.fetchMovies(DEFAULT_PAGE).lastOrNull()
 
         webServerRule.assertRequestMethod(path = ANY_MOVIES_ENDPOINT, method = MockWebServerRule.GET)
         assertThatEquals(result?.getOrNull(), moviesResponse)
@@ -43,7 +44,7 @@ class MoviesRemoteDataSourceShould {
     fun `Get MoviesException data when fetchMovies is failure`() = runTest {
         webServerRule.loadMockResponse(responseCode = 400)
 
-        val result = moviesRemoteDataSource.fetchMovies().lastOrNull()
+        val result = moviesRemoteDataSource.fetchMovies(DEFAULT_PAGE).lastOrNull()
 
         webServerRule.assertRequestMethod(path = ANY_MOVIES_ENDPOINT, method = MockWebServerRule.GET)
         assertThatIsInstanceOf<DataException.MoviesException>(result?.exceptionOrNull())

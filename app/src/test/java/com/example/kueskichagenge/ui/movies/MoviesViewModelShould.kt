@@ -56,6 +56,31 @@ class MoviesViewModelShould {
     }
 
     @Test
+    fun `Get Movies data when loadMoreMovies is success`() = runTest {
+        val movies = givenMoviesFakeData()
+        whenever(getMoviesUseCase.fetchMovies()).thenReturn(flowOf(Result.success(movies)))
+
+        moviesViewModel.loadMoreMovies()
+
+        val result = moviesViewModel.moviesUiState.firstOrNull()
+
+        verify(getMoviesUseCase).fetchMovies()
+        assertThatEquals(result?.movies, movies)
+    }
+
+    @Test
+    fun `Get MoviesException data when loadMoreMovies is failure`() = runTest {
+        whenever(getMoviesUseCase.fetchMovies()).thenReturn(flowOf(Result.failure(DataException.MoviesException())))
+
+        moviesViewModel.loadMoreMovies()
+
+        val result = moviesViewModel.moviesUiState.firstOrNull()
+
+        verify(getMoviesUseCase).fetchMovies()
+        assertThatIsInstanceOf<DataException.MoviesException>(result?.error)
+    }
+
+    @Test
     fun `Navigate to movieDetail when openMovieDetail is called`() = runTest {
         moviesViewModel.openMovieDetail(ANY_MOVIE_DETAIL_ID)
 
