@@ -2,19 +2,19 @@ package com.example.kueskichagenge.ui.home.navigation
 
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
-import com.example.kueskichagenge.core.extensions.empty
+import com.example.kueskichagenge.core.extensions.DEFAULT_VALUE
 
 sealed class HomeRoute(val route: String) {
     data object Movies : HomeRoute("movies")
     data object MovieDetail : HomeRoute("movieDetail/{$MOVIE_ID_ARGUMENT}"){
 
-        fun createRoute(movieId: String): String {
-            return route.replace("{$MOVIE_ID_ARGUMENT}", movieId)
+        fun createRoute(movieId: Int): String {
+            return route.replace("{$MOVIE_ID_ARGUMENT}", movieId.toString())
         }
 
-        fun getArguments(defaultId: String = String.empty()) = listOf(
+        fun getArguments(defaultId: Int = DEFAULT_VALUE) = listOf(
             navArgument(MOVIE_ID_ARGUMENT) {
-                type = NavType.StringType
+                type = NavType.IntType
                 defaultValue = defaultId
             }
         )

@@ -45,7 +45,11 @@ import com.example.kueskichagenge.ui.views.MoviesErrorScreen
 import com.example.kueskichagenge.ui.views.TextWithIcon
 
 @Composable
-fun MoviesScreen(viewModel: MovieDetailViewModel = hiltViewModel(), id: Int) {
+fun MovieDetailScreen(
+    viewModel: MovieDetailViewModel = hiltViewModel(),
+    id: Int,
+    onBackClick: () -> Unit
+) {
     val uiState = viewModel.movieDetailUiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
@@ -56,6 +60,7 @@ fun MoviesScreen(viewModel: MovieDetailViewModel = hiltViewModel(), id: Int) {
         isLoading = uiState.value.isLoading,
         movieDetail = uiState.value.movieDetail,
         error = uiState.value.error,
+        onBackClick = onBackClick,
         onRetry = { viewModel.getMovieDetail(id) }
     )
 }

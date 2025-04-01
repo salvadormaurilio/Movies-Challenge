@@ -40,13 +40,21 @@ import com.example.kueskichagenge.ui.movies.givenMovies
 import com.example.kueskichagenge.ui.theme.KueskiChagengeTheme
 import com.example.kueskichagenge.ui.views.CircularProgressIndicatorFixMax
 import com.example.kueskichagenge.ui.views.MoviesErrorScreen
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
-fun MoviesScreen(viewModel: MoviesViewModel =  hiltViewModel()) {
+fun MoviesScreen(viewModel: MoviesViewModel = hiltViewModel(), openMovieDetail: (id: Int) -> Unit) {
     val uiState = viewModel.moviesUiState.collectAsStateWithLifecycle()
+    val navigateToMovieDetailChanel = viewModel.navigateToMovieDetail
 
     LaunchedEffect(Unit) {
         viewModel.getMovies()
+    }
+
+    LaunchedEffect(navigateToMovieDetailChanel) {
+        viewModel.navigateToMovieDetail.collectLatest {
+            openMovieDetail(it)
+        }
     }
 
     MoviesContent(
@@ -185,7 +193,9 @@ fun MovieItemPreview() {
 fun MoviesContentUiStateLoadingPreview() {
     KueskiChagengeTheme {
         MoviesContent(
-            isLoading = true) }
+            isLoading = true
+        )
+    }
 }
 
 @Preview(showBackground = true)
@@ -193,7 +203,8 @@ fun MoviesContentUiStateLoadingPreview() {
 fun MoviesContentUiStateSuccessPreview() {
     KueskiChagengeTheme {
         MoviesContent(
-            movies = givenMovies())
+            movies = givenMovies()
+        )
     }
 }
 
@@ -203,7 +214,8 @@ fun MoviesContentUiStateErrorPreview() {
     KueskiChagengeTheme {
         KueskiChagengeTheme {
             MoviesContent(
-                error = DataException.MoviesException())
+                error = DataException.MoviesException()
+            )
         }
     }
 }
