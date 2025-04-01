@@ -44,7 +44,7 @@ fun MoviesErrorScreen(
         Icon(
             imageVector = Icons.Default.Warning,
             contentDescription = String.empty(),
-            tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.9f),
+            tint = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.size(72.dp)
         )
 
@@ -72,7 +72,7 @@ fun MoviesErrorScreen(
         ) {
             Text(
                 text = stringResource(R.string.retry),
-                style = MaterialTheme.typography.titleMedium,
+                style = MaterialTheme.typography.titleSmall,
             )
         }
     }
