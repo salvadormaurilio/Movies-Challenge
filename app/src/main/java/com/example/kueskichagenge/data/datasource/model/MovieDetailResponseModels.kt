@@ -87,7 +87,7 @@ fun Result<MovieDetailResponse>.toMovieDetail() = map { it.toMovieDetail() }
 
 fun MovieDetailResponse.toMovieDetail() = MovieDetail(
     id = id.orDefault(),
-    image = BASE_MOVIE_URL + backdropPath.orEmpty(),
+    image = BASE_MOVIE_URL + posterPath.orEmpty(),
     title = title.orEmpty(),
     duration = runtime.orDefault(),
     releaseDate = releaseDate.orEmpty(),
@@ -96,4 +96,4 @@ fun MovieDetailResponse.toMovieDetail() = MovieDetail(
     overview = overview.orEmpty()
 )
 
-private const val BASE_MOVIE_URL = "https://image.tmdb.org/t/p/w500"
+private const val BASE_MOVIE_URL = "https://image.tmdb.org/t/p/w400"

@@ -1,15 +1,12 @@
-package com.example.kueskichagenge.ui.movies
+package com.example.kueskichagenge.ui.mmovie.detail
 
 import com.example.kueskichagenge.core.TestDispatcherRule
 import com.example.kueskichagenge.core.assertThatEquals
 import com.example.kueskichagenge.core.assertThatIsInstanceOf
 import com.example.kueskichagenge.data.datasource.exception.DataException
 import com.example.kueskichagenge.domain.GetMovieDetailUseCase
-import com.example.kueskichagenge.domain.GetMoviesUseCase
 import com.example.kueskichagenge.fakedata.ANY_MOVIE_DETAIL_ID
 import com.example.kueskichagenge.fakedata.givenMovieDetailFakeData
-import com.example.kueskichagenge.fakedata.givenMovieDetailResponseFakeData
-import com.example.kueskichagenge.fakedata.givenMoviesFakeData
 import com.example.kueskichagenge.ui.movie.detail.MovieDetailViewModel
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flowOf

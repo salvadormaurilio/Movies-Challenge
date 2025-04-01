@@ -62,7 +62,7 @@ fun givenMovieDetailResponseFakeData() = MovieDetailResponse(
 
 fun givenMovieDetailFakeData() = MovieDetail(
     id = 1125899,
-    image = "https://image.tmdb.org/t/p/w500/mwzDApMZAGeYCEVjhegKvCzDX0W.jpg",
+    image = "https://image.tmdb.org/t/p/w400/mwzDApMZAGeYCEVjhegKvCzDX0W.jpg",
     title = "Cleaner",
     duration = 96,
     releaseDate = "2025-02-19",

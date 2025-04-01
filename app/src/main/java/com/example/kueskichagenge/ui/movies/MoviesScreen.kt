@@ -104,7 +104,9 @@ fun MoviesTopAppBar() {
         colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.primary),
         title = {
             Text(
-                text = stringResource(id = R.string.movies)
+                text = stringResource(id = R.string.movies),
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onPrimary
             )
         }
     )
