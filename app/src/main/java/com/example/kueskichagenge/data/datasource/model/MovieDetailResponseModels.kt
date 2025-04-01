@@ -92,7 +92,7 @@ fun MovieDetailResponse.toMovieDetail() = MovieDetail(
     duration = runtime.orDefault(),
     releaseDate = releaseDate.orEmpty(),
     rating = voteAverage?.toString().orEmpty(),
-    genres = genres?.mapNotNull { it.name }?.joinToString().orEmpty(),
+    genres = genres?.mapNotNull { it.name }.orEmpty(),
     overview = overview.orEmpty()
 )
 

@@ -17,9 +17,9 @@ class MovieDetailViewModel @Inject constructor(
     private val coroutinesDispatchers: CoroutinesDispatchers,
 ) : ViewModel() {
 
-    private val _movieDetailUiState = MutableStateFlow<MovieDetailUiState?>(null)
+    private val _movieDetailUiState = MutableStateFlow(MovieDetailUiState())
 
-    val movieDetailUiState: StateFlow<MovieDetailUiState?>
+    val movieDetailUiState: StateFlow<MovieDetailUiState>
         get() = _movieDetailUiState
 
     fun getMovieDetail(movieId: Int) = viewModelScope.launch(coroutinesDispatchers.io) {

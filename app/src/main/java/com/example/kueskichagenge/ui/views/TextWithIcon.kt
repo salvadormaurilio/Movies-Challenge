@@ -32,7 +32,7 @@ fun TextWithIcon(
             contentDescription = String.empty(),
             tint = MaterialTheme.colorScheme.onSurface
         )
-        Spacer(modifier = Modifier.width(4.dp))
+        Spacer(modifier = Modifier.width(2.dp))
         Text(
             text = text,
             style = MaterialTheme.typography.bodyLarge

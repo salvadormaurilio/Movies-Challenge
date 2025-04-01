@@ -96,7 +96,7 @@ fun MoviesTopAppBar() {
         colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.primary),
         title = {
             Text(
-                text = stringResource(id = R.string.movies_title)
+                text = stringResource(id = R.string.movies)
             )
         }
     )
@@ -162,19 +162,11 @@ fun MovieItem(
                 Text(
                     text = movie.overview,
                     style = MaterialTheme.typography.bodyMedium,
-                    maxLines = 5,
+                    maxLines = 4,
                     overflow = TextOverflow.Ellipsis
                 )
             }
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun MoviesTopAppBarPreview() {
-    KueskiChagengeTheme {
-        MoviesTopAppBar()
     }
 }
 
@@ -190,35 +182,28 @@ fun MovieItemPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun MoviesPreview() {
+fun MoviesContentUiStateLoadingPreview() {
     KueskiChagengeTheme {
-        Movies(
-            movies = givenMovies().movies
-        )
+        MoviesContent(
+            isLoading = true) }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun MoviesContentUiStateSuccessPreview() {
+    KueskiChagengeTheme {
+        MoviesContent(
+            movies = givenMovies())
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun HomeScreenUiStateLoadingPreview() {
-    KueskiChagengeTheme {
-        MoviesContent(isLoading = true) }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun HomeScreenUiStateSuccessPreview() {
-    KueskiChagengeTheme {
-        MoviesContent(movies = givenMovies())
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun HomeScreenUiStateErrorPreview() {
+fun MoviesContentUiStateErrorPreview() {
     KueskiChagengeTheme {
         KueskiChagengeTheme {
-            MoviesContent(error = DataException.MoviesException())
+            MoviesContent(
+                error = DataException.MoviesException())
         }
     }
 }
