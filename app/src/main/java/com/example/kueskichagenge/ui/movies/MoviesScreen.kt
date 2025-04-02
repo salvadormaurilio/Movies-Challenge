@@ -234,8 +234,7 @@ fun Movies(
         state = listState
     ) {
         items(
-            items = movies.movies,
-            key = { it.id }
+            items = movies.movies
         ) {
             MovieItem(
                 movie = it,
