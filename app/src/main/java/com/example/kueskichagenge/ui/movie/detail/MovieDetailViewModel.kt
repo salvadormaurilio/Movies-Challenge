@@ -22,12 +22,15 @@ class MovieDetailViewModel @Inject constructor(
     val movieDetailUiState: StateFlow<MovieDetailUiState>
         get() = _movieDetailUiState
 
-    fun getMovieDetail(movieId: Int) = viewModelScope.launch(coroutinesDispatchers.io) {
-        emitMovieDetailUiState(isLoading = true)
+    fun getMovieDetail(movieId: Int) {
+        if (movieDetailUiState.value.movieDetail != null || movieDetailUiState.value.isLoading) return
+        viewModelScope.launch(coroutinesDispatchers.io) {
+            emitMovieDetailUiState(isLoading = true)
 
-        getMovieDetailUseCase.fetchMovieDetail(movieId).collect {
-            getMovieDetailSuccess(it)
-            getMovieDetailError(it)
+            getMovieDetailUseCase.fetchMovieDetail(movieId).collect {
+                getMovieDetailSuccess(it)
+                getMovieDetailError(it)
+            }
         }
     }
 

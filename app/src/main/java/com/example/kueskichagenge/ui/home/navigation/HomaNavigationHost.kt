@@ -40,7 +40,7 @@ private fun NavGraphBuilder.movieDetailNav(navController: NavHostController) {
 
         MovieDetailScreen(
             id = movieId,
-            onBackClick = { navController.popBackStack() }
+            onBackClick = { navController.navigateUp() }
         )
     }
 }
