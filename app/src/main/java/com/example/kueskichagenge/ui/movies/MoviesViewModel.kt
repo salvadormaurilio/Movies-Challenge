@@ -1,14 +1,20 @@
 package com.example.kueskichagenge.ui.movies
 
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kueskichagenge.core.coroutines.CoroutinesDispatchers
+import com.example.kueskichagenge.core.extensions.empty
 import com.example.kueskichagenge.core.extensions.orDefault
 import com.example.kueskichagenge.domain.GetMoviesUseCase
 import com.example.kueskichagenge.domain.model.Movies
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -23,6 +29,11 @@ class MoviesViewModel @Inject constructor(
 ) : ViewModel() {
 
     val listState = LazyListState()
+    var isActiveSearch by mutableStateOf(false)
+        private set
+    var query by mutableStateOf(String.empty())
+        private set
+    var jobGetMovies: Job? = null
 
     private val _moviesUiState = MutableStateFlow(MoviesUiState())
     val moviesUiState = _moviesUiState.asStateFlow()
@@ -30,26 +41,44 @@ class MoviesViewModel @Inject constructor(
     private val _navigateToMovieDetail = Channel<Int>()
     val navigateToMovieDetail = _navigateToMovieDetail.receiveAsFlow()
 
-    fun getMovies() {
-        if (moviesUiState.value.movies != null || moviesUiState.value.isLoading) return
-        viewModelScope.launch(coroutinesDispatchers.io) {
-            emitMoviesUiState(isLoading = true)
+    fun activeSearch(isActiveSearch: Boolean) {
+        this.isActiveSearch = isActiveSearch
+    }
 
-            getMoviesUseCase.fetchMovies().collect {
-                getMoviesSuccess(it)
-                getMoviesError(it)
-            }
+    fun initGetMovies() {
+        if (moviesUiState.value.movies != null) return
+        getMovies()
+    }
+
+    fun searchMovies(query: String) {
+        if (this.query == query) return
+        this.query = query
+        getMovies()
+    }
+
+    fun retryGetMovies() {
+        if (moviesUiState.value.isLoading) return
+        jobGetMovies?.cancel()
+        jobGetMovies = getMovies()
+    }
+
+    private fun getMovies() = viewModelScope.launch(coroutinesDispatchers.io) {
+        emitMoviesUiState(isLoading = true)
+        delay(DELAY_QUERY)
+        getMoviesUseCase.fetchMovies(query.trim()).collect {
+            getMoviesSuccess(it)
+            getMoviesError(it)
         }
     }
 
-    private fun getMoviesSuccess(result: Result<Movies>) = result.onSuccess {
+    private  fun getMoviesSuccess(result: Result<Movies>) = result.onSuccess {
+        viewModelScope.launch { listState.scrollToItem(0) }
         emitMoviesUiState(movies = it)
     }
 
     private fun getMoviesError(result: Result<Movies>) = result.onFailure {
         emitMoviesUiState(movies = null, error = it)
         it.printStackTrace()
-
     }
 
     fun loadMoreMovies() {
@@ -64,7 +93,6 @@ class MoviesViewModel @Inject constructor(
                 loadMoREMoviesError(it)
             }
         }
-
     }
 
     private fun loadMoreMoviesSuccess(result: Result<Movies>) = result.onSuccess {
@@ -92,7 +120,12 @@ class MoviesViewModel @Inject constructor(
             )
         }
     }
+
     fun openMovieDetail(movieId: Int) = viewModelScope.launch(coroutinesDispatchers.main) {
         _navigateToMovieDetail.send(movieId)
+    }
+
+    companion object {
+        const val DELAY_QUERY = 200L
     }
 }

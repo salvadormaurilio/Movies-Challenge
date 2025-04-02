@@ -9,6 +9,7 @@ const val ANY_MOVIES_ENDPOINT = "/3/discover/movie?include_adult=false&include_v
 const val ANY_SEARCH_MOVIES_ENDPOINT = "/3/search/movie?&include_adult=false&language=en-US&query=Avengers&page=1"
 const val ANY_QUERY = "Avengers"
 const val ANY_PAGE = 1
+const val ANY_SECOND_PAGE = 2
 
 fun givenMoviesResponseFakeData() = MoviesResponse(
     page = 1,

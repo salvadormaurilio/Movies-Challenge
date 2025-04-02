@@ -74,23 +74,48 @@ fun MovieDetailContent(
     onRetry: () -> Unit = {}
 ) {
     Scaffold(
-        topBar = { MovieDetailTopAppBar(onBackClick = onBackClick) }
-    ) { paddingValues ->
-        MovieDetail(
-            modifier = Modifier.padding(paddingValues), movieDetail
-        )
+        topBar = { MovieDetailTopAppBar(onBackClick = onBackClick) },
+        content =
+            { paddingValues ->
+                MovieDetail(
+                    modifier = Modifier.padding(paddingValues), movieDetail
+                )
 
-        MoviesErrorScreen(
-            modifier = Modifier.padding(paddingValues),
-            error = error,
-            onRetry = onRetry
-        )
+                MoviesErrorScreen(
+                    modifier = Modifier.padding(paddingValues),
+                    error = error,
+                    onRetry = onRetry
+                )
 
-        CircularProgressIndicatorFixMax(
-            modifier = Modifier.padding(paddingValues),
-            isVisible = isLoading
-        )
-    }
+                CircularProgressIndicatorFixMax(
+                    modifier = Modifier.padding(paddingValues),
+                    isVisible = isLoading
+                )
+            })
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MovieDetailTopAppBar(onBackClick: () -> Unit = {}) {
+    TopAppBar(
+        colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.primary),
+        title = {
+            Text(
+                text = stringResource(id = R.string.detail),
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onPrimary
+            )
+        },
+        navigationIcon = {
+            IconButton(onClick = onBackClick) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    tint = MaterialTheme.colorScheme.onPrimary,
+                    contentDescription = String.empty()
+                    )
+            }
+        }
+    )
 }
 
 @Composable
@@ -159,30 +184,6 @@ private fun MovieDetail(
             style = MaterialTheme.typography.bodyLarge,
         )
     }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun MovieDetailTopAppBar(onBackClick: () -> Unit = {}) {
-    TopAppBar(
-        colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.primary),
-        title = {
-            Text(
-                text = stringResource(id = R.string.detail),
-                style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.onPrimary
-            )
-        },
-        navigationIcon = {
-            IconButton(onClick = onBackClick) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = String.empty(),
-                    tint = MaterialTheme.colorScheme.onPrimary
-                )
-            }
-        }
-    )
 }
 
 @Preview(showBackground = true)

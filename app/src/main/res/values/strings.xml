@@ -2,6 +2,7 @@
     <string name="app_name">Kueski Chagenge</string>
 
     <string name="movies">Movies</string>"
+    <string name="search">"Search"</string>
     <string name="error_get_data">Error getting information</string>
     <string name="something_went_wrong">Oops! Something went wrong</string>
     <string name="movies_load_error">We couldn\'t load the movies.\nPlease check your connection and try again.</string>
