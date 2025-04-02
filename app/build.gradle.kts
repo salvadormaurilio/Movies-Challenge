@@ -15,11 +15,11 @@ val baseUrl = localProperties["BASE_URL"] as? String
 val apiToken = localProperties["API_TOKEN"] as? String
 
 android {
-    namespace = "com.example.kueskichagenge"
+    namespace = "com.example.movieschallenge"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.kueskichagenge"
+        applicationId = "com.example.movieschallenge"
         minSdk = 24
         targetSdk = 35
         versionCode = 1
