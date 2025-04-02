@@ -6,8 +6,9 @@ import com.example.kueskichagenge.data.datasource.exception.DataException
 import com.example.kueskichagenge.data.datasource.model.MovieDetailResponse
 import com.example.kueskichagenge.data.datasource.model.MoviesResponse
 import com.example.kueskichagenge.data.datasource.remote.MoviesRemoteDataSource
-import com.example.kueskichagenge.domain.model.DEFAULT_PAGE
 import com.example.kueskichagenge.fakedata.ANY_MOVIE_DETAIL_ID
+import com.example.kueskichagenge.fakedata.ANY_PAGE
+import com.example.kueskichagenge.fakedata.ANY_QUERY
 import com.example.kueskichagenge.fakedata.givenMovieDetailFakeData
 import com.example.kueskichagenge.fakedata.givenMovieDetailResponseFakeData
 import com.example.kueskichagenge.fakedata.givenMoviesFakeData
@@ -36,22 +37,22 @@ class MoviesRepositoryShould {
         val moviesResponse = givenMoviesResponseFakeData()
         val movies = givenMoviesFakeData()
         val resultSuccess = Result.success(moviesResponse)
-        whenever(moviesRemoteDataSource.fetchMovies(DEFAULT_PAGE)).thenReturn(flowOf(resultSuccess))
+        whenever(moviesRemoteDataSource.fetchMovies(ANY_QUERY,ANY_PAGE)).thenReturn(flowOf(resultSuccess))
 
-        val result = moviesRepository.fetchMovies(DEFAULT_PAGE).lastOrNull()
+        val result = moviesRepository.fetchMovies(ANY_QUERY, ANY_PAGE).lastOrNull()
 
-        verify(moviesRemoteDataSource).fetchMovies(DEFAULT_PAGE)
+        verify(moviesRemoteDataSource).fetchMovies(ANY_QUERY, ANY_PAGE)
         assertThatEquals(result?.getOrNull(), movies)
     }
 
     @Test
     fun `Get MoviesException data when fetchMovies is failure`() = runTest {
         val resultFailure: Result<MoviesResponse> = Result.failure(DataException.MoviesException())
-        whenever(moviesRemoteDataSource.fetchMovies(DEFAULT_PAGE)).thenReturn(flowOf(resultFailure))
+        whenever(moviesRemoteDataSource.fetchMovies(ANY_QUERY, ANY_PAGE)).thenReturn(flowOf(resultFailure))
 
-        val result = moviesRepository.fetchMovies(DEFAULT_PAGE).lastOrNull()
+        val result = moviesRepository.fetchMovies(ANY_QUERY, ANY_PAGE).lastOrNull()
 
-        verify(moviesRemoteDataSource).fetchMovies(DEFAULT_PAGE)
+        verify(moviesRemoteDataSource).fetchMovies(ANY_QUERY, ANY_PAGE)
         assertThatIsInstanceOf<DataException.MoviesException>(result?.exceptionOrNull())
     }
 

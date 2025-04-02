@@ -6,6 +6,7 @@ import com.example.kueskichagenge.data.MoviesRepository
 import com.example.kueskichagenge.data.datasource.exception.DataException
 import com.example.kueskichagenge.domain.model.DEFAULT_PAGE
 import com.example.kueskichagenge.domain.model.Movies
+import com.example.kueskichagenge.fakedata.ANY_QUERY
 import com.example.kueskichagenge.fakedata.givenMoviesFakeData
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.lastOrNull
@@ -30,22 +31,22 @@ class GetMoviesUserCaseShould {
     fun `Get Movies data when fetchMovies is success`() = runTest {
         val movies = givenMoviesFakeData()
         val resultSuccess = Result.success(movies)
-        whenever(moviesRepository.fetchMovies(DEFAULT_PAGE)).thenReturn(flowOf(resultSuccess))
+        whenever(moviesRepository.fetchMovies(ANY_QUERY, DEFAULT_PAGE)).thenReturn(flowOf(resultSuccess))
 
-        val result = getMoviesUseCase.fetchMovies().lastOrNull()
+        val result = getMoviesUseCase.fetchMovies(ANY_QUERY, DEFAULT_PAGE).lastOrNull()
 
-        verify(moviesRepository).fetchMovies(DEFAULT_PAGE)
+        verify(moviesRepository).fetchMovies(ANY_QUERY, DEFAULT_PAGE)
         assertThatEquals(result?.getOrNull(), movies)
     }
 
     @Test
     fun `Get MoviesException data when fetchMovies is failure`() = runTest {
         val resultFailure: Result<Movies> = Result.failure(DataException.MoviesException())
-        whenever(moviesRepository.fetchMovies(DEFAULT_PAGE)).thenReturn(flowOf(resultFailure))
+        whenever(moviesRepository.fetchMovies(ANY_QUERY, DEFAULT_PAGE)).thenReturn(flowOf(resultFailure))
 
-        val result = getMoviesUseCase.fetchMovies().lastOrNull()
+        val result = getMoviesUseCase.fetchMovies(ANY_QUERY, DEFAULT_PAGE).lastOrNull()
 
-        verify(moviesRepository).fetchMovies(DEFAULT_PAGE)
+        verify(moviesRepository).fetchMovies(ANY_QUERY, DEFAULT_PAGE)
         assertThatIsInstanceOf<DataException.MoviesException>(result?.exceptionOrNull())
     }
 }

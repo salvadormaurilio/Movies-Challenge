@@ -6,6 +6,9 @@ import com.example.kueskichagenge.domain.model.Movie
 import com.example.kueskichagenge.domain.model.Movies
 
 const val ANY_MOVIES_ENDPOINT = "/3/discover/movie?include_adult=false&include_video=false&language=en-US&sort_by=popularity.desc&page=1"
+const val ANY_SEARCH_MOVIES_ENDPOINT = "/3/search/movie?&include_adult=false&language=en-US&query=Avengers&page=1"
+const val ANY_QUERY = "Avengers"
+const val ANY_PAGE = 1
 
 fun givenMoviesResponseFakeData() = MoviesResponse(
     page = 1,

@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class MoviesRepository @Inject constructor(private val moviesRemoteDataSource: MoviesRemoteDataSource) {
 
-    fun fetchMovies(page: Int) = moviesRemoteDataSource.fetchMovies(page).map { it.toMovies() }
+    fun fetchMovies(query: String, page: Int) = moviesRemoteDataSource.fetchMovies(query, page).map { it.toMovies() }
 
     fun fetchMovieDetail(movieId: Int) = moviesRemoteDataSource.fetchMovieDetail(movieId).map { it.toMovieDetail() }
 }
