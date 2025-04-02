@@ -1,3 +1,4 @@
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -12,6 +13,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -20,6 +22,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -60,30 +63,37 @@ fun MoviesScreen(viewModel: MoviesViewModel = hiltViewModel(), openMovieDetail: 
 
     MoviesContent(
         isLoading = uiState.value.isLoading,
+        isLoadMore = uiState.value.isLoadMore,
         movies = uiState.value.movies,
         error = uiState.value.error,
         listState = viewModel.listState,
-        onMovieClick = { viewModel.openMovieDetail(it) },
-        onRetry = { viewModel.getMovies() }
+        onRetry = viewModel::getMovies,
+        onLoadMore = viewModel::loadMoreMovies,
+        onMovieClick = viewModel::openMovieDetail
     )
 }
 
 @Composable
 private fun MoviesContent(
     isLoading: Boolean = false,
+    isLoadMore: Boolean = false,
     movies: Movies? = null,
     error: Throwable? = null,
     listState: LazyListState = LazyListState(),
     onRetry: () -> Unit = {},
-    onMovieClick: (id: Int) -> Unit = {}
-) {
+    onLoadMore: () -> Unit = {},
+    onMovieClick: (id: Int) -> Unit = {},
+
+    ) {
     Scaffold(
         topBar = { MoviesTopAppBar() },
         content = { paddingValues ->
             Movies(
                 modifier = Modifier.padding(paddingValues),
                 listState = listState,
-                movies = movies?.movies,
+                isLoadMore = isLoadMore,
+                movies = movies,
+                onLoadMore = onLoadMore,
                 onMovieClick = onMovieClick
             )
 
@@ -120,23 +130,31 @@ fun MoviesTopAppBar() {
 fun Movies(
     modifier: Modifier = Modifier,
     listState: LazyListState,
-    onMovieClick: (id: Int) -> Unit = {},
-    movies: List<Movie>?
+    isLoadMore: Boolean,
+    movies: Movies?,
+    onLoadMore: () -> Unit = {},
+    onMovieClick: (id: Int) -> Unit = {}
 ) {
     if (movies == null) return
+
     LazyColumn(
         modifier = modifier,
         contentPadding = PaddingValues(vertical = 8.dp),
         state = listState
     ) {
         items(
-            items = movies,
+            items = movies.movies,
             key = { it.id }
         ) {
             MovieItem(
                 movie = it,
                 onMovieClick = onMovieClick
             )
+        }
+        if (!movies.isLastPage()) {
+            item {
+                LoadMoreItem(movies, isLoadMore, onLoadMore)
+            }
         }
     }
 }
@@ -186,6 +204,27 @@ fun MovieItem(
     }
 }
 
+@Composable
+private fun LoadMoreItem(
+    key: Any? = null,
+    isLoadMore: Boolean = false,
+    onLoadMore: () -> Unit = {}
+) {
+    LaunchedEffect(key) {
+        if (!isLoadMore) {
+            onLoadMore()
+        }
+    }
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        CircularProgressIndicator()
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun MovieItemPreview() {
@@ -193,6 +232,14 @@ fun MovieItemPreview() {
         MovieItem(
             movie = givenMovie1()
         )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun LoadMoreItemPreview() {
+    KueskiChagengeTheme {
+        LoadMoreItem()
     }
 }
 
@@ -211,6 +258,7 @@ fun MoviesContentUiStateLoadingPreview() {
 fun MoviesContentUiStateSuccessPreview() {
     KueskiChagengeTheme {
         MoviesContent(
+            isLoadMore = true,
             movies = givenMovies(),
         )
     }

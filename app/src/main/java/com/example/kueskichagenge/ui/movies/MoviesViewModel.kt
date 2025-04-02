@@ -4,6 +4,7 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kueskichagenge.core.coroutines.CoroutinesDispatchers
+import com.example.kueskichagenge.core.extensions.orDefault
 import com.example.kueskichagenge.domain.GetMoviesUseCase
 import com.example.kueskichagenge.domain.model.Movies
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -11,6 +12,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -45,18 +47,51 @@ class MoviesViewModel @Inject constructor(
     }
 
     private fun getMoviesError(result: Result<Movies>) = result.onFailure {
+        emitMoviesUiState(movies = null, error = it)
         it.printStackTrace()
-        emitMoviesUiState(error = it)
+
+    }
+
+    fun loadMoreMovies() {
+        if (moviesUiState.value.movies?.isLastPage() == true || moviesUiState.value.isLoadMore) return
+
+        viewModelScope.launch(coroutinesDispatchers.io) {
+            emitMoviesUiState(isLoadMore = true)
+
+            val page = moviesUiState.value.movies?.page.orDefault() + 1
+            getMoviesUseCase.fetchMovies(page = page).collect {
+                loadMoreMoviesSuccess(it)
+                loadMoREMoviesError(it)
+            }
+        }
+
+    }
+
+    private fun loadMoreMoviesSuccess(result: Result<Movies>) = result.onSuccess {
+        val movies = it.copy(movies = moviesUiState.value.movies?.movies.orEmpty() + it.movies)
+        emitMoviesUiState(movies = movies)
+    }
+
+    private fun loadMoREMoviesError(result: Result<Movies>) = result.onFailure {
+        emitMoviesUiState(movies = null, error = it)
+        it.printStackTrace()
     }
 
     private fun emitMoviesUiState(
         isLoading: Boolean = false,
-        movies: Movies? = null,
+        isLoadMore: Boolean = false,
+        movies: Movies? = moviesUiState.value.movies,
         error: Throwable? = null
     ) {
-        _moviesUiState.value = MoviesUiState(isLoading = isLoading, movies = movies, error = error)
+        _moviesUiState.update { current ->
+            current.copy(
+                isLoading = isLoading,
+                isLoadMore = isLoadMore,
+                movies = movies,
+                error = error
+            )
+        }
     }
-
     fun openMovieDetail(movieId: Int) = viewModelScope.launch(coroutinesDispatchers.main) {
         _navigateToMovieDetail.send(movieId)
     }

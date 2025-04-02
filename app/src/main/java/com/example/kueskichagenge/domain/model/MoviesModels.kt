@@ -5,7 +5,7 @@ const val DEFAULT_PAGE = 1
 data class Movies(
     val page: Int,
     val totalPages: Int,
-    var movies: List<Movie>
+    val movies: List<Movie>
 ){
     fun isLastPage() = page >= totalPages
 }
