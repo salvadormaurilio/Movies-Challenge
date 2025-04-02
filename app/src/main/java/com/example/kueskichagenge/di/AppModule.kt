@@ -28,7 +28,7 @@ object AppModule {
     fun provideInterceptor() = Interceptor { chain: Interceptor.Chain ->
         val original = chain.request()
         val request = original.newBuilder()
-            .header(AUTHORIZATION_HEADER, BuildConfig.AUTH_TOKEN)
+            .header(AUTHORIZATION_HEADER, BuildConfig.API_TOKEN)
             .method(original.method, original.body)
             .build()
         chain.proceed(request)

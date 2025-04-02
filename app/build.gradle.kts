@@ -12,7 +12,7 @@ val localProperties = Properties().apply {
     load(rootProject.file("local.properties").inputStream())
 }
 val baseUrl = localProperties["BASE_URL"] as? String
-val authToken = localProperties["AUTH_TOKEN"] as? String
+val apiToken = localProperties["API_TOKEN"] as? String
 
 android {
     namespace = "com.example.kueskichagenge"
@@ -27,7 +27,7 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "BASE_URL", "\"$baseUrl\"")
-        buildConfigField("String", "AUTH_TOKEN", "\"Bearer $authToken\"")
+        buildConfigField("String", "API_TOKEN", "\"Bearer $apiToken\"")
     }
 
     buildTypes {
